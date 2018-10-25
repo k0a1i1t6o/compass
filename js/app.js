@@ -11,6 +11,10 @@
     hng: null
   };
 
+  var targetNumber = document.location.search.substring(1);
+  var targetLatitude = 0;
+  var targetLongitude = 0;
+  var targetAzimuth = 0;
 
   // the outer part of the compass that rotates
   var rose = document.getElementById("rose");
@@ -189,7 +193,7 @@
         }
       }
 
-      positionCurrent.hng = heading + adjustment;
+      positionCurrent.hng = targetAzimuth - heading + adjustment;
 
       var phase = positionCurrent.hng < 0 ? 360 + positionCurrent.hng : positionCurrent.hng;
       positionHng.textContent = (360 - phase | 0) + "°";
@@ -208,6 +212,35 @@
       showHeadingWarning();
     }
   }
+
+    // この計算では緯度・経度ともに1度以上にわたる広い範囲には適用できません。
+  // 緯度・経度が数分以内のごく狭い範囲に限って適用可能です。
+  // 距離はメートル単位で返され、方位角は真東を0として±180度の範囲で返されます。
+
+  var R_EARTH = 6378137;			// 地球の赤道半径
+  var RAD = Math.PI / 180;	// 1°あたりのラジアン
+
+  // 2点間の方位角を求める関数
+  function azimuth(lat1, lon1, lat2, lon2) {
+  	// 度をラジアンに変換
+  	lat1 *= RAD;
+  	lon1 *= RAD;
+  	lat2 *= RAD;
+  	lon2 *= RAD;
+
+  	var lat_c = (lat1 + lat2) / 2;					// 緯度の中心値
+  	var dx = R_EARTH * (lon2 - lon1) * Math.cos(lat_c);
+  	var dy = R_EARTH * (lat2 - lat1);
+
+  	if (dx == 0 && dy == 0) {
+  		return 0;	// dx, dyともに0のときは強制的に0とする。
+  	}
+  	else {
+  		return Math.atan2(dy, dx) / RAD;	// 結果は度単位で返す
+  	}
+  }
+
+
 
   function showHeadingWarning() {
     if (!warningHeadingShown) {
@@ -305,6 +338,13 @@
 
     positionLat.textContent = decimalToSexagesimal(positionCurrent.lat, "lat");
     positionLng.textContent = decimalToSexagesimal(positionCurrent.lng, "lng");
+
+    //自分と相手の緯度・経度から相手の居る方位角を計算。真東を0としているので、90から引く。
+    targetAzimuth = 90 - azimuth(positionCurrent.lat, positionCurrent.lng, targetLatitude, targetLongitude).toFixed(2);
+
+    if (0 > targetAzimuth){
+      targetAzimuth = 360 + targetAzimuth;
+    }
   }
 
   function locationUpdateFail(error) {
