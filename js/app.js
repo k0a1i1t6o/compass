@@ -339,7 +339,15 @@
     positionLat.textContent = decimalToSexagesimal(positionCurrent.lat, "lat");
     positionLng.textContent = decimalToSexagesimal(positionCurrent.lng, "lng");
 
-    targetLatitude = 34.986178;
+    //自分と相手の緯度・経度から相手の居る方位角を計算。真東を0としているので、90から引く。
+    targetAzimuth = 90 - azimuth(positionCurrent.lat, positionCurrent.lng, targetLatitude, targetLongitude).toFixed(2);
+
+    if (0 > targetAzimuth){
+      targetAzimuth = 360 + targetAzimuth;
+    }
+  }
+
+  targetLatitude = 34.986178;
     targetLongitude = 135.964712;
 
     //自分と相手の緯度・経度から相手の居る方位角を計算。真東を0としているので、90から引く。
@@ -348,7 +356,6 @@
     if (0 > targetAzimuth){
       targetAzimuth = 360 + targetAzimuth;
     }
-  }
 
   function locationUpdateFail(error) {
     positionLat.textContent = "n/a";
