@@ -339,8 +339,8 @@
     positionLat.textContent = decimalToSexagesimal(positionCurrent.lat, "lat");
     positionLng.textContent = decimalToSexagesimal(positionCurrent.lng, "lng");
 
-    targetLatitude = 34.529746;
-    targetLongitude = 135.954386;
+    targetLatitude = 35.022884;
+    targetLongitude = 135.962202;
 
     //自分と相手の緯度・経度から相手の居る方位角を計算。真東を0としているので、90から引く。
     targetAzimuth = 90 - azimuth(positionCurrent.lat, positionCurrent.lng, targetLatitude, targetLongitude).toFixed(2);
