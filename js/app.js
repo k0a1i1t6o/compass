@@ -12,8 +12,8 @@
   };
 
   var targetNumber = document.location.search.substring(1);
-  var targetLatitude = 34.986178;
-  var targetLongitude = 135.964712;
+  var targetLatitude = 34.529746;
+  var targetLongitude = 135.954386;
   var targetAzimuth = 0;
 
   // the outer part of the compass that rotates
