@@ -201,9 +201,9 @@
 
       // apply rotation to compass rose
       if (typeof rose.style.transform !== "undefined") {
-        rose.style.transform = "rotateZ(" + positionCurrent.hng + "deg)";
+        rose.style.transform = "rotateZ(" + positionCurrent.hng + 180 + "deg)";
       } else if (typeof rose.style.webkitTransform !== "undefined") {
-        rose.style.webkitTransform = "rotateZ(" + positionCurrent.hng + "deg)";
+        rose.style.webkitTransform = "rotateZ(" + positionCurrent.hng + 180 + "deg)";
       }
     } else {
       // device can't show heading
