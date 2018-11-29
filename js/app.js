@@ -12,8 +12,8 @@
   };
 
   var targetNumber = document.location.search.substring(1);
-  var targetLatitude = 34.529746;
-  var targetLongitude = 135.954386;
+  var targetLatitude = 0;
+  var targetLongitude = 0;
   var targetAzimuth = 0;
 
   // the outer part of the compass that rotates
@@ -346,6 +346,9 @@
       targetAzimuth = 360 + targetAzimuth;
     }
   }
+
+    targetLatitude = 34.529746;
+    targetLongitude = 135.954386;
 
     //自分と相手の緯度・経度から相手の居る方位角を計算。真東を0としているので、90から引く。
     targetAzimuth = targetAzimuth + 90 - azimuth(positionCurrent.lat, positionCurrent.lng, targetLatitude, targetLongitude).toFixed(2);
